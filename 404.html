@@ -10,22 +10,26 @@
       function redirect() {
         var location = window.location;
         var redirectNow = isNotValidUrl();
+        console.log(location);
+        console.log(redirectNow);
         if (redirectNow) {
             location.replace("https://buggachat.tumblr.com");
         };
         var lang = location.pathname.split("/")[1];
         var partNumber = location.pathname.split("/")[3];
+        console.log(lang + " " + partNumber)
         // var partNumber = "45";
         // var lang = "en";
         var homepage =
           location.protocol +
           "//" +
           location.hostname +
-          (location.port ? ":" + location.port : "") +
-          "beau-redirect" + 
+          (location.port ? ":" + location.port : "") + 
           "/" + lang +
           "/part/" +
           partNumber;
+        
+        console.log(homepage);
 
         var xhr = new XMLHttpRequest();
 
