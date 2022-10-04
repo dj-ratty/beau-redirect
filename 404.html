@@ -4,17 +4,26 @@
     <meta charset="utf-8" />
     <title>Redirecting...</title>
     <script>
+      function isNotValidUrl() {
+        return !(/^https?:\/\/dj-ratty\.github\.io\/beau-redirect\/(\w+)\/part\/(\d+)$/.test(window.location));
+      };
       function redirect() {
         var location = window.location;
+        var redirectNow = isNotValidUrl();
+        if (redirectNow) {
+            location.replace("https://buggachat.tumblr.com");
+        };
+        var lang = location.pathname.split("/")[-3];
         var partNumber = location.pathname.split("/")[-1];
-        // var partNumber = "1";
+        // var partNumber = "45";
+        // var lang = "en";
         var homepage =
           location.protocol +
           "//" +
           location.hostname +
           (location.port ? ":" + location.port : "") +
-          "/" +
-          "en-ids/part/" +
+          "/" + lang +
+          "/part/" +
           partNumber;
 
         var xhr = new XMLHttpRequest();
@@ -42,7 +51,7 @@
         xhr.onerror = function () {
           location.replace(homepage);
         };
-        xhr.open("GET", "https://raw.githubusercontent.com/dj-ratty/beau-redirect/master/parts/en-ids.json");
+        xhr.open("GET", "https://raw.githubusercontent.com/dj-ratty/beau-redirect/master/parts/" + lang + ".json");
         xhr.send();
       }
 
