@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      function redirect() {
+        var location = window.location;
+        var partNumber = location.pathname.split("/")[-1];
+        // var partNumber = "1";
+        var homepage =
+          location.protocol +
+          "//" +
+          location.hostname +
+          (location.port ? ":" + location.port : "") +
+          "/" +
+          "en-ids/part/" +
+          partNumber;
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.onload = function () {
+          try {
+            var payload = JSON.parse(xhr.response);
+
+            // Workaround IE 11 lack of support for new URL()
+            var url = document.createElement("a");
+            url.setAttribute("href", payload[partNumber]);
+
+            var isInvalidPart = !(partNumber in payload);
+
+            if (isInvalidPart) {
+              location.replace(homepage);
+            } else {
+              location.replace(payload[partNumber]);
+            }
+          } catch (e) {
+            location.replace(homepage);
+          }
+        };
+
+        xhr.onerror = function () {
+          location.replace(homepage);
+        };
+        xhr.open("GET", "https://raw.githubusercontent.com/dj-ratty/beau-redirect/master/parts/en-ids.json");
+        xhr.send();
+      }
+
+      redirect();
+    </script>
+  </head>
+  <body></body>
+</html>
