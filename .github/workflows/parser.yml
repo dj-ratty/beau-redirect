@@ -1,7 +1,8 @@
 name: AutoUpdate
 
 on:
-  schedule: '59 23 */1 * *'
+  schedule: 
+    - cron: '59 23 */1 * *'
   workflow_dispatch:
 
 
