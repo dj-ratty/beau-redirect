@@ -1,8 +1,7 @@
 name: AutoUpdate
 
 on:
-  push:
-    branches: [ "master" ]
+  schedule: '59 23 */1 * *'
   workflow_dispatch:
 
 
