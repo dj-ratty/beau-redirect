@@ -24,7 +24,7 @@ jobs:
     - name: Run main
       run: python parser/main.py
     - name: Commit changes
-      uses: EndBug/add-and-commit@9
+      uses: EndBug/add-and-commit@v9
       with:
         add: 'parts/*'
         message: 'Auto Update'
