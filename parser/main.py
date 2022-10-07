@@ -22,7 +22,7 @@ class PartJSON:
     def __init__(self, file_path) -> None:
         self.new_file = not os.path.exists(file_path)
         self.file_path = file_path
-        if self.new_file:
+        if not self.new_file:
             with open(file_path, "r", encoding="utf-8") as f:
                 self._url_dict = json.load(f)
         else:
@@ -182,7 +182,12 @@ language_inst = [
     TumblrFromMasterlistInstance(language="en-ids",
                                  url="https://iveofficiallygonemad.tumblr.com/post/679210281835134976/bakery-enemies-au-masterlist",
                                  regex_pattern="ep\s?(\d+)",
-                                 body_class="post-content")
+                                 body_class="post-content"),
+    TumblrPerPageInstance(language="ru",
+                          first_url="https://djratty.tumblr.com/post/693142158949203968/part-1-bakery-enemies-ru",
+                          next_titles=("Следующая", ),
+                          get_content=True,
+                          body_id="content")
 ]
 
 
