@@ -37,15 +37,15 @@
             // Workaround IE 11 lack of support for new URL()
             var url = document.createElement("a");
             url.setAttribute("href", payload[partNumber]);
-            url.innerHTML = payload[partNumber]
-
+            url.innerHTML = payload[partNumber];
+            document.body.appendChild(url);
             var isInvalidPart = !(partNumber in payload);
 
             if (isInvalidPart) {
               location.replace(homepage);
             } else {
               if (notRedirect) {
-                return
+                return;
               }
               location.replace(payload[partNumber]);
             }
