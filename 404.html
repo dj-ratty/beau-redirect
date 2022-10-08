@@ -42,6 +42,9 @@
             var isInvalidPart = !(partNumber in payload);
 
             if (isInvalidPart) {
+              if (notRedirect) {
+                return;
+              }
               location.replace(homepage);
             } else {
               if (notRedirect) {
@@ -50,11 +53,17 @@
               location.replace(payload[partNumber]);
             }
           } catch (e) {
+            if (notRedirect) {
+                return;
+              }
             location.replace(homepage);
           }
         };
 
         xhr.onerror = function () {
+          if (notRedirect) {
+                return;
+              }
           location.replace(homepage);
         };
         xhr.open("GET", "https://raw.githubusercontent.com/dj-ratty/beau-redirect/master/parts/" + lang + ".json");
