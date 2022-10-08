@@ -7,12 +7,16 @@
       function isNotValidUrl() {
         return !(/^https?:\/\/dj-ratty\.github\.io\/beau-redirect\/(?:en|en\-ids|ru)\/part\/(?:\d+)$/.test(window.location));
       };
+      function ifReturnString() {
+        return /^https?:\/\/dj-ratty\.github\.io\/beau-redirect\/(?:en|en\-ids|ru)\/part\/(?:\d+)\/raw$/.test(window.location);
+      };
       function redirect() {
         var location = window.location;
         var redirectNow = isNotValidUrl();
+        var notRedirect = ifReturnString();
         console.log(location);
         console.log(redirectNow);
-        if (redirectNow) {
+        if (redirectNow && !notRedirect) {
             location.replace("https://github.com/dj-ratty/beau-redirect");
         };
         var lang = location.pathname.split("/")[2];
@@ -33,12 +37,16 @@
             // Workaround IE 11 lack of support for new URL()
             var url = document.createElement("a");
             url.setAttribute("href", payload[partNumber]);
+            url.innerHTML = payload[partNumber]
 
             var isInvalidPart = !(partNumber in payload);
 
             if (isInvalidPart) {
               location.replace(homepage);
             } else {
+              if (notRedirect) {
+                return
+              }
               location.replace(payload[partNumber]);
             }
           } catch (e) {
