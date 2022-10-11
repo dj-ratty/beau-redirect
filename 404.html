@@ -1,77 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Redirecting...</title>
-    <script>
-      function isNotValidUrl() {
-        return !(/^https?:\/\/dj-ratty\.github\.io\/beau-redirect\/(?:en|en\-ids|ru)\/part\/(?:\d+)$/.test(window.location));
-      };
-      function ifReturnString() {
-        return /^https?:\/\/dj-ratty\.github\.io\/beau-redirect\/(?:en|en\-ids|ru)\/part\/(?:\d+)\/raw$/.test(window.location);
-      };
-      function redirect() {
-        var location = window.location;
-        var redirectNow = isNotValidUrl();
-        var notRedirect = ifReturnString();
-        console.log(location);
-        console.log(redirectNow);
-        if (redirectNow && !notRedirect) {
-            location.replace("https://github.com/dj-ratty/beau-redirect");
-        };
-        var lang = location.pathname.split("/")[2];
-        var partNumber = location.pathname.split("/")[4];
-        console.log(lang + " " + partNumber)
-        // var partNumber = "45";
-        // var lang = "en";
-        var homepage = "https://github.com/dj-ratty/beau-redirect";
-        
-        console.log(homepage);
+    <head>
+        <meta charset="utf-8" />
+        <title>Redirecting...</title>
+        <script type="text/javascript">
+            const homepage = "https://github.com/dj-ratty/beau-redirect"
+            // const locationNow = "https://dj-ratty.github.io/beau-redirect/en/part/123";
+            const locationNow = window.location;
+            function regexUrlDefaultPartNum(url) {
+                return /^https?:\/\/dj-ratty\.github\.io\/beau-redirect\/(?<lang>en|en\-ids|ru)\/part\/(?<part>\d+)$/.exec(url);
+            };
+            const resultRegex = regexUrlDefaultPartNum(locationNow);
+            if (!resultRegex) {
+                window.location.replace(homepage);
+            };
+            var lang = resultRegex.groups["lang"];
+            var partNumber = resultRegex.groups["part"];
 
-        var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                try {
+                    var payload = JSON.parse(xhr.response);
+                    // Workaround IE 11 lack of support for new URL()
+                    var url = document.createElement("a");
+                    url.setAttribute("href", payload[partNumber]);
+                    url.innerHTML = payload[partNumber];
+                    document.body.appendChild(url);
+                    var isInvalidPart = !(partNumber in payload);
 
-        xhr.onload = function () {
-          try {
-            var payload = JSON.parse(xhr.response);
-
-            // Workaround IE 11 lack of support for new URL()
-            var url = document.createElement("a");
-            url.setAttribute("href", payload[partNumber]);
-            url.innerHTML = payload[partNumber];
-            document.body.appendChild(url);
-            var isInvalidPart = !(partNumber in payload);
-
-            if (isInvalidPart) {
-              if (notRedirect) {
-                return;
-              }
-              location.replace(homepage);
-            } else {
-              if (notRedirect) {
-                return;
-              }
-              location.replace(payload[partNumber]);
-            }
-          } catch (e) {
-            if (notRedirect) {
-                return;
-              }
-            location.replace(homepage);
-          }
-        };
-
-        xhr.onerror = function () {
-          if (notRedirect) {
-                return;
-              }
-          location.replace(homepage);
-        };
-        xhr.open("GET", "https://raw.githubusercontent.com/dj-ratty/beau-redirect/master/parts/" + lang + ".json");
-        xhr.send();
-      }
-
-      redirect();
-    </script>
-  </head>
-  <body></body>
+                    if (isInvalidPart) {
+                        window.location.replace(homepage);
+                    } else {
+                        location.replace(payload[partNumber]);
+                    };
+                } catch (e) {
+                    window.location.replace(homepage);
+                };
+            };
+            xhr.onerror = function () {
+                window.location.replace(homepage);
+            };
+            xhr.open("GET", "https://raw.githubusercontent.com/dj-ratty/beau-redirect/master/parts/" + lang + ".json");
+            xhr.send();
+        </script>
+    </head>
+    <body></body>
 </html>
