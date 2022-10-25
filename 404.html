@@ -8,7 +8,7 @@
             // const locationNow = "https://dj-ratty.github.io/beau-redirect/en/part/123";
             const locationNow = window.location;
             function regexUrlDefaultPartNum(url) {
-                return /^https?:\/\/dj-ratty\.github\.io\/beau-redirect\/(?<lang>en|en\-ids|ru)\/part\/(?<part>\d+)$/.exec(url);
+                return /^https?:\/\/dj-ratty\.github\.io\/beau-redirect\/(?<lang>en|en\-ids|ru|es)\/part\/(?<part>\d+)$/.exec(url);
             };
             const resultRegex = regexUrlDefaultPartNum(locationNow);
             if (!resultRegex) {
