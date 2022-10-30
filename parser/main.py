@@ -1,13 +1,14 @@
-from httpx import Client
-from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
-from random import randint
-from time import sleep
 import json
-from dataclasses import dataclass
-from typing import Optional, Union
 import os
 import re
+from dataclasses import dataclass
+from random import randint
+from time import sleep
+from typing import Optional, Union
+
+from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
+from httpx import Client
 
 URL = str
 Part = Union[str, int]
