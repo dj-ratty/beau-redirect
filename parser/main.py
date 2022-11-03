@@ -118,11 +118,16 @@ class TumblrPerPage:
         for next_title in self.inst.next_titles:
             if (res := content_soup.find("a", text=next_title)) is not None:
                 return res
+
+    def _get_url_from_redirect(self, url):
+        return str(session.get(url, follow_redirects=True).url)
     
     def _get_next_url(self, url) -> Optional[URL]:
         res_raw = session.get(url)
         html = self._get_contents(BeautifulSoup(res_raw.content, "lxml"))
         if (next_page_tag := self._find_next_page_a_tag(html)) is not None:
+            if "https://at.tumblr.com" in next_page_tag.attrs["href"]:
+                return self._get_url_from_redirect(next_page_tag.attrs["href"])
             return next_page_tag.attrs["href"]
     
     def find_new_urls(self) -> bool:
@@ -160,11 +165,17 @@ class TumblrFromMasterlist:
         html = BeautifulSoup(res_raw.content, "lxml")
         html_post = html.find(class_=self.inst.body_class)
         return html_post
-
+    
+    def _find_and_replace_redirections(urls):
+        for part_num, url in urls.items():
+            if "at.tumblr.com/" in url:
+                urls[part_num] = str(session.get(url, follow_redirects=True).url)
+        return urls
     
     def get_all_urls(self) -> dict[Part, URL]:
         html_post = self._get_post_body()
         urls = {re.match(self.inst.regex_pattern, x.text).groups()[0]: x.attrs["href"] for x in html_post.find_all("a") if re.match(self.inst.regex_pattern, x.text)}
+        urls = self._find_and_replace_redirections(urls)
         return urls
     
     def update(self):
