@@ -166,7 +166,7 @@ class TumblrFromMasterlist:
         html_post = html.find(class_=self.inst.body_class)
         return html_post
     
-    def _find_and_replace_redirections(urls):
+    def _find_and_replace_redirections(self, urls):
         for part_num, url in urls.items():
             if "at.tumblr.com/" in url:
                 urls[part_num] = str(session.get(url, follow_redirects=True).url)
