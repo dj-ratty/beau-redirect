@@ -24,9 +24,28 @@ jobs:
     - name: Run main
       run: python parser/main.py
     - name: Commit changes
+      id: commit
       uses: EndBug/add-and-commit@v9
       with:
         add: 'parts/*'
         message: 'Auto Update'
         default_author: github_actions
         push: true
+    - name: ntfy-success
+      uses: niniyas/ntfy-action@master
+      if: success()
+      with:
+        url: '${{ secrets.NTFY_URL }}'
+        topic: '${{ secrets.NTFY_TOPIC }}'
+        tags: heavy_check_mark,croissant,croissant
+        title: 'beau-redirect parser.yml'
+        details: 'commited: ${{ steps.commit.outputs.commited }}'
+    - name: ntfy-fail
+      uses: niniyas/ntfy-action@master
+      if: failure()
+      with:
+        url: '${{ secrets.NTFY_URL }}'
+        topic: '${{ secrets.NTFY_TOPIC }}'
+        tags: negative_squared_cross_mark,croissant,croissant
+        title: 'beau-redirect parser.yml failes'
+        details: 'FAILED'
