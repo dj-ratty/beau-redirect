@@ -1,4 +1,4 @@
 beautifulsoup4==4.11.1
 fake-useragent==0.1.11
-httpx==0.23.0
+httpx==0.23.1
 lxml==4.9.1 
