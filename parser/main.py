@@ -135,7 +135,7 @@ class TumblrPerPage:
         res_raw = session.get(url, follow_redirects=True)
         html = self._get_contents(BeautifulSoup(res_raw.content, "lxml"))
         if (next_page_tag := self._find_next_page_a_tag(html)) is not None:
-            if "https://at.tumblr.com" in next_page_tag.attrs["href"]:
+            if "https://at.tumblr.com" in next_page_tag.attrs["href"] or get_force_rewrite_urls():
                 return self._get_url_from_redirect(next_page_tag.attrs["href"])
             return next_page_tag.attrs["href"]
     
