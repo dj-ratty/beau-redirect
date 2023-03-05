@@ -8,6 +8,7 @@ from typing import Optional, Union
 
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
+from fake_useragent.errors import FakeUserAgentError
 from httpx import Client
 
 URL = str
@@ -19,8 +20,11 @@ FORCE_REWRITE_URLS_STR = str(os.environ.get("BEAU_FORCEREWRITEURLS", "0"))
 def get_force_rewrite_urls():
     return FORCE_REWRITE_URLS_STR.lower() in ("1", "true", "y", "yes")
 
-ua = UserAgent()
-session = Client(headers={"User-Agent": ua.firefox})
+try:
+    ua = UserAgent()
+    session = Client(headers={"User-Agent": ua.firefox})
+except FakeUserAgentError:
+    session = Client(headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:101.0) Gecko/20100101 Firefox/101.0"})
 
 
 class PartJSON:
