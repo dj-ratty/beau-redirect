@@ -29,7 +29,7 @@ except FakeUserAgentError:
 
 class PartJSON:
     def __init__(self, file_path, force_rewrite = False) -> None:
-        self.new_file = not os.path.exists(file_path) and not force_rewrite
+        self.new_file = not os.path.exists(file_path) or not force_rewrite
         self.file_path = file_path
         if not self.new_file:
             with open(file_path, "r", encoding="utf-8") as f:
