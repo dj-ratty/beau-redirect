@@ -4,7 +4,12 @@ on:
   schedule: 
     - cron: '59 23 */3 * *'
   workflow_dispatch:
-
+    inputs:
+      forcerewriteurls:
+        description: 'Force Rewrite URLs'
+        default: false
+        type: boolean
+        required: false
 
 jobs:
   build:
@@ -23,6 +28,8 @@ jobs:
         pip install -r parser/requirements.txt
     - name: Run main
       run: python parser/main.py
+      env:
+        BEAU_FORCEREWRITEURLS: ${{ inputs.forcerewriteurls }}
     - name: Commit changes
       id: commit
       uses: EndBug/add-and-commit@v9

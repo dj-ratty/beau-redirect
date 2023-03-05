@@ -14,14 +14,18 @@ URL = str
 Part = Union[str, int]
 
 PARTS_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), "parts")
+FORCE_REWRITE_URLS_STR = str(os.environ.get("BEAU_FORCEREWRITEURLS", "0"))
+
+def get_force_rewrite_urls():
+    return FORCE_REWRITE_URLS_STR.lower() in ("1", "true", "y", "yes")
 
 ua = UserAgent()
 session = Client(headers={"User-Agent": ua.firefox})
 
 
 class PartJSON:
-    def __init__(self, file_path) -> None:
-        self.new_file = not os.path.exists(file_path)
+    def __init__(self, file_path, force_rewrite = False) -> None:
+        self.new_file = not os.path.exists(file_path) and not force_rewrite
         self.file_path = file_path
         if not self.new_file:
             with open(file_path, "r", encoding="utf-8") as f:
@@ -105,7 +109,8 @@ class TumblrPerPageInstance(BaseInstance):
 class TumblrPerPage:
     def __init__(self, inst: TumblrPerPageInstance) -> None:
         self.inst = inst
-        self.data = PartJSON(os.path.join(PARTS_FOLDER, self.inst.get_filename()))
+        self.data = PartJSON(os.path.join(PARTS_FOLDER, self.inst.get_filename()),
+                             get_force_rewrite_urls())
         if self.data.new_file:
             self.data[1] = self.inst.first_url
     
@@ -158,7 +163,8 @@ class TumblrFromMasterlistInstance(BaseInstance):
 class TumblrFromMasterlist:
     def __init__(self, inst: TumblrFromMasterlistInstance) -> None:
         self.inst = inst
-        self.data = PartJSON(os.path.join(PARTS_FOLDER, self.inst.get_filename()))
+        self.data = PartJSON(os.path.join(PARTS_FOLDER, self.inst.get_filename()),
+                             get_force_rewrite_urls())
     
     def _get_post_body(self):
         res_raw = session.get(self.inst.url)
