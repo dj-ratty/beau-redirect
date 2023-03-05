@@ -9,7 +9,7 @@ from typing import Optional, Union
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from fake_useragent.errors import FakeUserAgentError
-from httpx import Client
+from httpx_cache import Client
 
 URL = str
 Part = Union[str, int]
@@ -22,9 +22,9 @@ def get_force_rewrite_urls():
 
 try:
     ua = UserAgent()
-    session = Client(headers={"User-Agent": ua.firefox})
+    session = Client(headers={"User-Agent": ua.firefox, "Cache-Control": "max-age=3600"})
 except FakeUserAgentError:
-    session = Client(headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:101.0) Gecko/20100101 Firefox/101.0"})
+    session = Client(headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:101.0) Gecko/20100101 Firefox/101.0", "Cache-Control": "max-age=3600"})
 
 
 class PartJSON:
