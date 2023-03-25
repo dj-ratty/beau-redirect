@@ -130,6 +130,15 @@ class TumblrPerPage:
 
     def _get_url_from_redirect(self, url):
         return str(session.get(url, follow_redirects=True).url)
+
+    @staticmethod
+    def _get_url_from_dashboard(url):
+        match = re.match(r"(https\:\/\/)?(www\.)?tumblr.com\/(?P<blogname>[^\/]+)\/(?P<post>\d+)\/(?P<slug>\S+)",
+                         url)
+        if not match:
+            return None
+        groups = match.groupdict()
+        return f"https://{groups['blogname']}.tumblr.com/post/{groups['post']}/{groups['slug']}"
     
     def _get_next_url(self, url) -> Optional[URL]:
         res_raw = session.get(url, follow_redirects=True)
@@ -137,6 +146,8 @@ class TumblrPerPage:
         if (next_page_tag := self._find_next_page_a_tag(html)) is not None:
             if "https://at.tumblr.com" in next_page_tag.attrs["href"] or get_force_rewrite_urls():
                 return self._get_url_from_redirect(next_page_tag.attrs["href"])
+            if (new_url := self._get_url_from_dashboard(next_page_tag.attrs["href"])) is not None:
+                return new_url
             return next_page_tag.attrs["href"]
     
     def find_new_urls(self) -> bool:
