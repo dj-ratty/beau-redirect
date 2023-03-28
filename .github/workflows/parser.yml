@@ -2,7 +2,7 @@ name: AutoUpdate
 
 on:
   schedule: 
-    - cron: '59 23 */3 * *'
+    - cron: '59 23 * * *'
   workflow_dispatch:
     inputs:
       forcerewriteurls:
