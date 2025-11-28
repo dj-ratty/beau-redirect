@@ -5,7 +5,7 @@ How-to: `https://dj-ratty.github.io/beau-redirect/{language}/part/{part}`
 ## Languages supported:
 
 - "en" - [English](https://buggachat.tumblr.com/post/644149191443152896/a-little-cover-for-my-bakery-enemies-au-no) (original by [@buggachat](https://buggachat.tumblr.com/)) [TUMBLR]
-- "en-ids" - [English with Image Descriptions](https://iveofficiallygonemad.tumblr.com/post/679210281835134976/bakery-enemies-au-masterlist) by [@iveofficiallygonemad](https://iveofficiallygonemad.tumblr.com/) and [@princess-of-purple-prose](https://princess-of-purple-prose.tumblr.com/) [TUMBLR]
+- "en-ids" - [English with Image Descriptions](https://iveofficiallygonemad.tumblr.com/post/679210281835134976/bakery-enemies-au-masterlist) by [@iveofficiallygonemad](https://iveofficiallygonemad.tumblr.com/) and [@nebulations](https://nebulations.tumblr.com/) [TUMBLR]
 - "en-ao3" - [English](https://archiveofourown.org/works/36730066) [AO3 LOL]
 - "ru" - [Russian (Русский) by Чудесный Домик Переводов](https://mangalib.me/ru/187507--bakery-enemies-au) [MANGALIB]
 - "ru-tg" - [Russian (Русский) by Чудесный Домик Переводов](https://t.me/ladybugischatnoir) [TELEGRAM]
